@@ -31,8 +31,6 @@ shift somewhat with a larger real dataset, so it's worth spot-checking once real
 
 - Run the container with `scc-singularity`, not plain `singularity` — it's the SCC's supported wrapper
   and automatically binds project storage (`/projectnb`, etc.).
-- `scc-singularity exec` has a quoting quirk with multi-command `bash -c '...'` strings — write each
-  pipeline step as its own script file and run that, rather than an inline multi-statement command.
 - `proname_refine`'s clustering (`vsearch`) and polishing (`medaka`) steps have no built-in checkpoint —
   if a job is killed mid-run (e.g. it hits its time-limit ceiling), it must be restarted from scratch.
   Request a generous walltime up front rather than risk this.
