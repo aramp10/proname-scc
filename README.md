@@ -74,6 +74,11 @@ Core count matters differently for each step — more cores is not always better
 These are starting points based on a 10-sample test dataset — actual runtime and the ideal core count may
 shift somewhat with a larger real dataset, so it's worth spot-checking once real data is running.
 
+One more thing worth budgeting for with the 28-core request: it's a scarcer resource on the SCC than
+16 cores, so it can queue longer before starting. In our testing this ranged from under a minute up to
+about an hour, depending on cluster load at the time — plan for that possibility rather than assuming an
+immediate start, especially on a larger real dataset.
+
 ## Practical notes for running this pipeline on the SCC
 
 - Run the container with `scc-singularity`, not plain `singularity` — it's the SCC's supported wrapper
