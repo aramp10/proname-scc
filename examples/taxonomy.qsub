@@ -1,0 +1,15 @@
+#!/bin/bash -l
+#$ -P your_project
+#$ -j y
+#$ -l h_rt=12:00:00
+#$ -pe omp 16
+#$ -N proname_taxonomy
+
+echo "Running job on host: $(hostname)"
+echo "Starting at: $(date)"
+echo "NSLOTS=$NSLOTS"
+
+cd /projectnb/your_project/your_workdir
+scc-singularity exec proname.sif bash run_taxonomy.sh
+
+echo "Finished at: $(date)"

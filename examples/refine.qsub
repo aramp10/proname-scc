@@ -1,0 +1,15 @@
+#!/bin/bash -l
+#$ -P your_project
+#$ -j y
+#$ -l h_rt=120:00:00
+#$ -pe omp 28
+#$ -N proname_refine
+
+echo "Running job on host: $(hostname)"
+echo "Starting at: $(date)"
+echo "NSLOTS=$NSLOTS"
+
+cd /projectnb/your_project/your_workdir
+scc-singularity exec proname.sif bash run_refine.sh
+
+echo "Finished at: $(date)"
