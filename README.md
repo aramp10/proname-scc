@@ -42,9 +42,6 @@ wherever you want `RawData/` created; no `qsub` needed, it's light enough to run
 Each step runs as its own batch job — submit with `qsub <script>.qsub` (see [`examples/`](examples/) for
 the full scripts). A brief description of each step and its key options:
 
-*(Steps 1-2's commands were tested directly; their `qsub` wrapper is a standard batch-job template, not
-itself run as a job. Steps 3-4's `qsub` scripts and commands were both run exactly as shown.)*
-
 **1. Import — `qsub import.qsub`** (`proname_import`)
 Trims adapters/primers and separates duplex/simplex reads. Key options: sequencing kit and primer
 sequences used for the run.
@@ -63,11 +60,12 @@ database/taxonomy file, and `--phyloseq yes` to also produce an R-ready phyloseq
 
 ## Recommended SCC resource requests
 
-Steps 3 and 4 were each benchmarked at two core counts to find a sensible default resource request.
-Core count matters differently for each step — more cores is not always better:
+Each step was benchmarked at two core counts to find a sensible default resource request. Core count
+matters differently for each step — more cores is not always better:
 
 | Pipeline step | Recommended cores (`-pe omp N`) | Why |
 |---|---|---|
+| `proname_import` / `proname_filter` (trimming + length/quality filtering) | **16** | Compared against 4 cores on the test dataset: 16 cores finished the combined steps ~3.2x faster in wall-clock time (1h29m → 28m). The adapter/primer-trimming sub-steps scaled especially well (~9-10x faster); the QC-plotting sub-step scaled less but still meaningfully, and dominates total wall time either way. |
 | `proname_refine` (clustering + polishing) | **28** | Both 16 and 28 cores kept 84-86% of requested cores busy — the extra cores at 28 do real work, cutting wall-clock time by ~35% (~4h38m → ~3h02m on the test dataset) for a modest ~15% increase in total core-hours. |
 | `proname_taxonomy` (taxonomic classification) | **16** | 16 and 28 cores finished in essentially the same wall-clock time and used the same memory; 28 cores only kept ~59% of its requested cores busy on average, vs. ~76% at 16 — the extra cores aren't doing useful work for this step. |
 
@@ -94,6 +92,10 @@ immediate start, especially on a larger real dataset.
   be present as plain files in the current working directory, separately from the `--qseqs`/`--qtable`
   `.qza` inputs — make sure those two files are also available there (e.g. via symlink) or phyloseq
   object generation will fail even though the main taxonomy step succeeds.
+- If your dataset has zero duplex reads (common with some flow cell/basecaller combos even when
+  `--duplex yes` is set), `proname_import`'s duplex-only QC plot will fail with `Error: The FASTQ file
+  contains no usable data.` / `Error: plotting failed.` This is benign — it doesn't stop the pipeline,
+  and the other two QC plots (simplex-only, combined simplex+duplex) are still produced correctly.
 
 ## Example scripts
 

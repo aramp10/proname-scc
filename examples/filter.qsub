@@ -2,7 +2,7 @@
 #$ -P your_project
 #$ -j y
 #$ -l h_rt=12:00:00
-#$ -pe omp 4
+#$ -pe omp 16
 #$ -N proname_filter
 
 echo "Running job on host: $(hostname)"
