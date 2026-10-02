@@ -17,11 +17,7 @@ pipeline — for use on BU's Shared Computing Cluster (SCC), ahead of running it
 ## Building the Singularity container
 
 Following BU's [Building From Docker or Singularity Hub](https://www.bu.edu/tech/support/research/software-and-programming/containers/building/)
-guide:
-
-```bash
-[user@scc-i01 ~]$ singularity pull proname.sif docker://benn888/proname:v2.3.0-amd64
-```
+guide. See [`examples/build_container.md`](examples/build_container.md) for the full command sequence.
 
 Run from a dedicated build node (`scc-i01`/`scc-i02`), not a general compute node. Took about 15 minutes
 to pull and build the ~9.4 GB image. Move the resulting `.sif` to project storage once done; it doesn't
