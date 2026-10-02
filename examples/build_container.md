@@ -2,7 +2,7 @@
 
 Full command sequence used to build `proname.sif` on the SCC, following BU's
 [Building From Docker or Singularity Hub](https://www.bu.edu/tech/support/research/software-and-programming/containers/building/)
-guide. Replace `/projectnb/<your_project>/<your_dir>` with your own project directory.
+guide. The image is pulled from PRONAME's [Docker Hub page](https://hub.docker.com/r/benn888/proname). Replace `/projectnb/<your_project>/<your_dir>` with your own project directory.
 
 ```bash
 # Log in to a build node (scc-i01 or scc-i02)
