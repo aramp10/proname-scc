@@ -90,6 +90,20 @@ Everything goes in your `WORKDIR`:
 On PRONAME's 10-sample tutorial dataset, a full run took about 3.5–5.5 hours, plus time waiting in the
 queue. Refine was the longest step, at 3–4¾ hours.
 
+These scripts were also tested end to end on a small subset (2 tutorial samples, first 20,000 reads of
+each):
+
+| Step | Cores | Run time |
+|---|---|---|
+| import | 16 | 54 s |
+| filter | 16 | 28 s |
+| refine | 28 | 6 min 13 s |
+| taxonomy | 16 | 2 min 20 s |
+
+**Note:** the refine step deletes the QC plots and read-distribution tables from steps 1–2
+(`LengthvsQualityScatterPlot*.png`, `*read_distribution.tsv`) as part of its cleanup. To keep them, copy
+them out of `WORKDIR` after the filter step finishes and before refine starts.
+
 ## Files in this folder
 
 | File | Purpose |
