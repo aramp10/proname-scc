@@ -100,10 +100,6 @@ each):
 | refine | 28 | 6 min 13 s |
 | taxonomy | 16 | 2 min 20 s |
 
-**Note:** the refine step deletes the QC plots and read-distribution tables from steps 1–2
-(`LengthvsQualityScatterPlot*.png`, `*read_distribution.tsv`) as part of its cleanup. To keep them, copy
-them out of `WORKDIR` after the filter step finishes and before refine starts.
-
 ## Files in this folder
 
 | File | Purpose |
