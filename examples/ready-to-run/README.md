@@ -19,7 +19,7 @@ Run these in an SCC terminal (a login node such as `scc1` or an OnDemand desktop
 **1. Get the latest version of this repo**
 
 ```bash
-cd /projectnb/vervmb/mfinn/proname-scc
+cd /projectnb/vervmb/mfinn/proname-scc    # or wherever you cloned this repo
 git pull
 cd examples/ready-to-run
 ```
