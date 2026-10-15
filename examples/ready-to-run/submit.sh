@@ -26,6 +26,9 @@ ls "$RAWDATA"/*.fastq >/dev/null 2>&1 || die "no .fastq files in RAWDATA=$RAWDAT
 [ "$(realpath -m "$WORKDIR")" != "$(realpath "$RAWDATA")" ] || die "WORKDIR must be a different folder from RAWDATA"
 printf '%s\n' "${STEPS[@]}" | awk '{print $1}' | grep -qx "$START" || die "unknown step '$START' (use import, filter, refine, or taxonomy)"
 [ -z "$METADATA" ] || [ -f "$METADATA" ] || die "METADATA file not found: $METADATA"
+if [ "$START" = import ] && [ -n "$(ls -A "$WORKDIR" 2>/dev/null | grep -vx sample_metadata.tsv)" ]; then
+  die "WORKDIR already has files from an earlier run -- set a new WORKDIR in config.sh"
+fi
 
 mkdir -p "$WORKDIR"
 

@@ -17,10 +17,20 @@ fi
 EXTRA=()
 [ "$STEP" = taxonomy ] && EXTRA=("$WORKDIR/sample_metadata.tsv")
 
-if scc-singularity exec "$SIF" bash "$PIPELINE_DIR/steps/$STEP.sh" "$PIPELINE_DIR/config.sh" "${EXTRA[@]}"; then
+scc-singularity exec "$SIF" bash "$PIPELINE_DIR/steps/$STEP.sh" "$PIPELINE_DIR/config.sh" "${EXTRA[@]}"
+
+# Exit codes can't be trusted here (PRONAME and scc-singularity both return 0
+# on failure), so check that the step produced its main output instead.
+case "$STEP" in
+  import)   ok() { [ -s reads_simplex_duplex.fastq ]; } ;;
+  filter)   ok() { [ -n "$(ls -A HQ 2>/dev/null)" ]; } ;;
+  refine)   ok() { [ -s rep_seqs.qza ] && [ -s rep_table.qza ]; } ;;
+  taxonomy) ok() { [ -s taxonomy_blastn.qza ]; } ;;
+esac
+if ok; then
   touch ".done_$STEP"
   echo "Step $STEP finished OK: $(date)"
 else
-  echo "ERROR: step $STEP failed: $(date)"
+  echo "ERROR: step $STEP did not produce its expected output -- see the messages above: $(date)"
   exit 1
 fi
