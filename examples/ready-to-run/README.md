@@ -43,6 +43,17 @@ Fill in the four required lines with full paths:
 | `RAWDATA` | full path to the **folder** of `.fastq` files (not a single file) |
 | `WORKDIR` | a new folder for results, e.g. `/projectnb/<your_project>/<your_dir>/proname_run1` |
 
+For example, with the files already set up in the `vervmb` project (tutorial data), the four lines are:
+
+```bash
+PROJECT=vervmb
+SIF=/projectnb/vervmb/mfinn/proname.sif
+RAWDATA=/projectnb/vervmb/mfinn/proname-scc/examples/RawData
+WORKDIR=/projectnb/vervmb/mfinn/proname_run1
+```
+
+`WORKDIR` doesn't need to exist yet; `submit.sh` creates it.
+
 The other settings (sequencing kit, primers, read length/quality filters) are set for PRONAME's tutorial
 data. Change them to match your own data when you run it on real samples.
 
