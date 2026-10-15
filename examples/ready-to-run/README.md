@@ -14,8 +14,6 @@ exist inside the container (`proname.sif`), and these scripts take care of runni
 
 ## Steps
 
-Run these in an SCC terminal (a login node such as `scc1` or an OnDemand desktop both work).
-
 **1. Get the latest version of this repo**
 
 ```bash
@@ -26,33 +24,21 @@ cd examples/ready-to-run
 
 **2. Edit `config.sh`**
 
-The easiest way is with Geany, a text editor, in an SCC OnDemand interactive desktop:
+In an SCC OnDemand desktop, open the settings file by running:
 
 ```bash
 geany config.sh
 ```
 
-(In a plain terminal you can use `vim config.sh` instead.)
-
-Fill in the four required lines with full paths:
-
-| Setting | What to put |
-|---|---|
-| `PROJECT` | your SCC project name |
-| `SIF` | full path to `proname.sif` |
-| `RAWDATA` | full path to the **folder** of `.fastq` files (not a single file) |
-| `WORKDIR` | a new folder for results, e.g. `/projectnb/<your_project>/<your_dir>/proname_run1` |
-
-For example, with the files already set up in the `vervmb` project (tutorial data), the four lines are:
+Then set these four lines (full paths). Example for the files already set up in the `vervmb` project
+(tutorial data):
 
 ```bash
-PROJECT=vervmb
-SIF=/projectnb/vervmb/mfinn/proname.sif
-RAWDATA=/projectnb/vervmb/mfinn/proname-scc/examples/RawData
-WORKDIR=/projectnb/vervmb/mfinn/proname_run1
+PROJECT=vervmb                                                # your SCC project name
+SIF=/projectnb/vervmb/mfinn/proname.sif                       # the PRONAME container
+RAWDATA=/projectnb/vervmb/mfinn/proname-scc/examples/RawData  # FOLDER of .fastq files, not a single file
+WORKDIR=/projectnb/vervmb/mfinn/proname_run1                  # new folder for results (created for you)
 ```
-
-`WORKDIR` doesn't need to exist yet; `submit.sh` creates it.
 
 The other settings (sequencing kit, primers, read length/quality filters) are set for PRONAME's tutorial
 data. Change them to match your own data when you run it on real samples.
@@ -63,9 +49,7 @@ data. Change them to match your own data when you run it on real samples.
 bash submit.sh
 ```
 
-The script checks your settings first and stops with a message if something is wrong. If everything
-is fine, it submits 4 jobs. Each job waits until the one before it finishes. If a step fails, the steps
-after it stop without running.
+This checks your settings, then submits 4 jobs that run one after another.
 
 **4. Check progress**
 
@@ -84,8 +68,6 @@ Everything goes in your `WORKDIR`:
 - `taxa_barplot_assay1_blastn.qzv`: taxa barplot. Open it at [view.qiime2.org](https://view.qiime2.org).
 - `taxonomy_assay1_blastn.tsv`: taxonomy table
 - `phyloseq_object.rds`: for analysis in R (phyloseq)
-- `sample_metadata.tsv`: if you didn't provide one (`METADATA` in `config.sh`), a placeholder is created
-  with one row per sample
 
 On PRONAME's 10-sample tutorial dataset, a full run took about 3.5–5.5 hours, plus time waiting in the
 queue. Refine was the longest step, at 3–4¾ hours.
@@ -99,12 +81,3 @@ each):
 | filter | 16 | 28 s |
 | refine | 28 | 6 min 13 s |
 | taxonomy | 16 | 2 min 20 s |
-
-## Files in this folder
-
-| File | Purpose |
-|---|---|
-| `config.sh` | your settings (the only file to edit) |
-| `submit.sh` | checks settings and submits the jobs |
-| `step.qsub` | batch job used for each step (called by `submit.sh`) |
-| `steps/*.sh` | the `proname_*` command for each step (run inside the container) |
