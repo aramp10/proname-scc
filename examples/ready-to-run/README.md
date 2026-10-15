@@ -90,19 +90,6 @@ Everything goes in your `WORKDIR`:
 On PRONAME's 10-sample tutorial dataset, a full run took about 3.5–5.5 hours, plus time waiting in the
 queue. Refine was the longest step, at 3–4¾ hours.
 
-## Re-running
-
-- **New run:** set a new `WORKDIR` in `config.sh`, then `bash submit.sh`.
-- **Re-run from a later step**, after fixing a problem (the earlier steps must have finished in the
-  same `WORKDIR`):
-
-  ```bash
-  bash submit.sh filter      # or: refine, taxonomy
-  ```
-
-  Note: refine deletes the filter step's large intermediate files to save space, so after refine has run,
-  re-running filter or refine means starting again from `import`.
-
 ## Files in this folder
 
 | File | Purpose |
