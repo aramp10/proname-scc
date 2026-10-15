@@ -1,0 +1,26 @@
+#!/bin/bash -l
+#$ -j y
+# Submitted by submit.sh -- not meant to be run by hand.
+# submit.sh sets the project, cores, run time, and PIPELINE_DIR/STEP/PREV_STEP.
+
+echo "Step: $STEP | host: $(hostname) | cores: $NSLOTS | start: $(date)"
+source "$PIPELINE_DIR/config.sh"
+cd "$WORKDIR" || exit 1
+
+# Don't start if the previous step did not finish successfully
+if [ -n "$PREV_STEP" ] && [ ! -f ".done_$PREV_STEP" ]; then
+  echo "ERROR: step '$PREV_STEP' did not finish successfully -- not running '$STEP'."
+  echo "Check that step's log (proname_$PREV_STEP.o<jobID>) in $WORKDIR."
+  exit 1
+fi
+
+EXTRA=()
+[ "$STEP" = taxonomy ] && EXTRA=("$WORKDIR/sample_metadata.tsv")
+
+if scc-singularity exec "$SIF" bash "$PIPELINE_DIR/steps/$STEP.sh" "$PIPELINE_DIR/config.sh" "${EXTRA[@]}"; then
+  touch ".done_$STEP"
+  echo "Step $STEP finished OK: $(date)"
+else
+  echo "ERROR: step $STEP failed: $(date)"
+  exit 1
+fi

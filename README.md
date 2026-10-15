@@ -95,6 +95,9 @@ immediate start, especially on a larger real dataset.
 
 ## Example scripts
 
+**Easiest way to run the pipeline:** [`examples/ready-to-run/`](examples/ready-to-run/). Edit one settings
+file, then run `bash submit.sh` to submit all 4 steps as chained batch jobs.
+
 See [`examples/`](examples/): `qsub` scripts and wrapped `proname_*` commands for each pipeline step
 (based on the recommended core counts above), plus `download_tutorial_data.sh` for fetching the test
 dataset.
