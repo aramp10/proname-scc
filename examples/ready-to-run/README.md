@@ -26,9 +26,13 @@ cd examples/ready-to-run
 
 **2. Edit `config.sh`**
 
+The easiest way is with Geany, a text editor, in an SCC OnDemand interactive desktop:
+
 ```bash
-nano config.sh      # save: Ctrl+O, Enter   exit: Ctrl+X
+geany config.sh
 ```
+
+(In a plain terminal you can use `vim config.sh` instead.)
 
 Fill in the four required lines with full paths:
 
