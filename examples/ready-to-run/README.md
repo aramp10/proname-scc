@@ -81,3 +81,20 @@ each):
 | filter | 16 | 28 s |
 | refine | 28 | 6 min 13 s |
 | taxonomy | 16 | 2 min 20 s |
+
+## How it works
+
+`ready-to-run/` is a one-command version of the per-step scripts in [`examples/`](../):
+
+| File | What it does | Equivalent in `examples/` |
+|---|---|---|
+| `config.sh` | Your paths and settings, in one place | Values typed into each script |
+| `submit.sh` | Checks `config.sh`, then submits the 4 steps as jobs that run one after another | Running `qsub` 4 times |
+| `step.qsub` | The batch job used for every step: runs the step in the container, then checks it produced its output | `import.qsub`, `filter.qsub`, … |
+| `steps/<step>.sh` | The PRONAME command for that step (runs inside the container) | `run_import.sh`, `run_filter.sh`, … |
+
+To change a PRONAME option (e.g. `--deletefiles` for refine), edit `steps/<step>.sh`.
+To change cores or run time, edit the `STEPS` table at the top of `submit.sh`.
+
+Each step writes `.done_<step>` in `WORKDIR` when it finishes, and the next step only starts if that file
+exists. This is needed because PRONAME reports success even when a step fails.
